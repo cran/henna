@@ -48,7 +48,8 @@ limits of the color scale will be set to [-1, 1].}
 
 \item{tileBoundaryWidth}{Tile boundary width.}
 
-\item{palette}{grDevices palette.}
+\item{palette}{grDevices palette used for coloring nodes.
+Ignored if nodeColor is not \code{NULL}.}
 
 \item{reverseColors}{Whether to reverse the order of colors in the palette.}
 

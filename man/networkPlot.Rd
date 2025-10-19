@@ -2,16 +2,18 @@
 % Please edit documentation in R/network_plot.R
 \name{networkPlot}
 \alias{networkPlot}
-\title{Plot graph with different colors for connected components}
+\title{Plot graph with the option of using different colors for connected components}
 \usage{
 networkPlot(
   df,
   title = "Network plot",
   rankCol = "rank",
   edgeScale = 2,
-  nodePointSize = 10,
+  nodeSize = 10,
   nodeTextSize = 2.3,
-  palette = "Pastel 1",
+  palette = "Spectral",
+  nodeColor = NULL,
+  edgeColor = "black",
   ...
 )
 }
@@ -25,11 +27,17 @@ networkPlot(
 \item{edgeScale}{Scaling factor used in generating
 edge weights.}
 
-\item{nodePointSize}{Point size of graph nodes.}
+\item{nodeSize}{Size of graph nodes.}
 
-\item{nodeTextSize}{Text size of graph nodes.}
+\item{nodeTextSize}{Size of text on graph nodes.}
 
-\item{palette}{grDevices palette.}
+\item{palette}{grDevices palette used for coloring nodes.
+Ignored if nodeColor is not \code{NULL}.}
+
+\item{nodeColor}{Color used for nodes. Default is \code{NULL}
+(\code{palette} will instead be used).}
+
+\item{edgeColor}{Color used for edges.}
 
 \item{...}{Other arguments passed to \code{centerTitle}.}
 }
@@ -37,8 +45,8 @@ edge weights.}
 An object of class \code{ggraph}.
 }
 \description{
-This function plots the graph of the data frame, using different colors for
-nodes belonging to different connected components.
+This function plots the graph of the data frame and optionallt uses different
+colors for nodes belonging to different connected components.
 }
 \examples{
 df <- data.frame(gene1 = paste0('G', c(1, 2, 5, 6, 7, 17)),

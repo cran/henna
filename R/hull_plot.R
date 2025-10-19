@@ -194,10 +194,15 @@ splitInFour <- function(p,
 #' @inheritParams splitInTwo
 #' @param hullSegments Data frame of segments that define the convex hull.
 #' @inheritParams quadBorders
-#' @param borderColor The color of the horizontal and vertical dividing lines,
+#' @param lineColor The color of the horizontal and vertical dividing lines,
 #' if provided. If \code{NULL}, no dividing lines will be drawn, though the
-#' hull will still be split along these lines (if \code{xInt}
-#' and/or \code{yInt}are not \code{NULL}).
+#' hull will still be split along these lines if \code{xInt}
+#' and/or \code{yInt}are not \code{NULL}.
+#' @param lineWidth The width of the horizontal and vertical dividing lines.
+#' Ignored if \code{lineColor} is \code{NULL}.
+#' @param lineType The type of the horizontal and vertical dividing lines.
+#' Choose between 'dashed','solid', 'dotted', 'dotdash', 'longdash' and
+#' 'twodash'. Default is 'dashed'. Ignored if \code{lineColor} is \code{NULL}.
 #'
 #' @return An object of class \code{gg} showing the hull split along the input
 #' axes.
@@ -209,24 +214,36 @@ splitHull <- function(p,
                       hullSegments,
                       xInt = NULL,
                       yInt = NULL,
-                      borderColor = NULL,
+                      lineColor = 'navy',
+                      lineWidth = 0.3,
+                      lineType = c('dashed','solid', 'dotted',
+                                   'dotdash', 'longdash', 'twodash'),
                       legendLabs = paste0('Group ', seq(4)),
-                      alpha = 0.5){
+                      alpha = 0.2){
+
+    lineType <- match.arg(lineType, c('dashed','solid', 'dotted',
+                                      'dotdash', 'longdash', 'twodash'))
 
     vCoords <- borderCoords(hullSegments, 1, xInt)
     hCoords <- borderCoords(hullSegments, 2, yInt)
 
-    if(!is.null(borderColor)){
+    if(!is.null(lineColor)){
         if (!is.null(xInt))
-            p <- p + geom_segment(aes(x=xInt, y=vCoords[1],
-                                      xend=xInt, yend=vCoords[2]),
-                                  color='navy', linewidth=0.3,
-                                  linetype='dashed')
+            p <- p + geom_segment(aes(x=xInt,
+                                      y=vCoords[1],
+                                      xend=xInt,
+                                      yend=vCoords[2]),
+                                  color=lineColor,
+                                  linewidth=lineWidth,
+                                  linetype=lineType)
         if (!is.null(yInt))
-            p <- p + geom_segment(aes(x=hCoords[1], y=yInt,
-                                      xend=hCoords[2], yend=yInt),
-                                  color='navy', linewidth=0.3,
-                                  linetype='dashed')
+            p <- p + geom_segment(aes(x=hCoords[1],
+                                      y=yInt,
+                                      xend=hCoords[2],
+                                      yend=yInt),
+                                  color=lineColor,
+                                  linewidth=lineWidth,
+                                  linetype=lineType)
     }
 
     if(is.null(xInt) & is.null(yInt))
@@ -265,6 +282,7 @@ splitHull <- function(p,
 #' hull will not be displayed.
 #' @param xLab Label of x axis.
 #' @param yLab Label of y axis.
+#' @param pointSize Point size.
 #' @param pointShape Point shape.
 #' @inheritParams labelPoints
 #' @param labelSize Label size. Ignored if \code{labelDF} is \code{NULL}.
@@ -287,13 +305,17 @@ hullPlot <- function(pointsDF,
                      title = 'Hull plot',
                      xInt = NULL,
                      yInt = NULL,
-                     borderColor = NULL,
                      palette = hpColors(),
+                     lineColor = 'navy',
+                     lineWidth = 0.3,
+                     lineType = c('dashed','solid', 'dotted',
+                                  'dotdash', 'longdash', 'twodash'),
                      hullWidth = 0,
                      xLab = 'x',
                      yLab = 'y',
                      legendLabs = paste0('Group ', seq(4)),
                      legendPos = 'bottom',
+                     pointSize = 1,
                      pointShape = 4,
                      alpha = 0.2,
                      labelDF = NULL,
@@ -359,13 +381,14 @@ hullPlot <- function(pointsDF,
                                   yend=.data[['yEnd']]),
                               linewidth=hullWidth)
 
-    p <- splitHull(p, pointsDF, hullSegments, xInt, yInt, borderColor,
+    p <- splitHull(p, pointsDF, hullSegments, xInt, yInt,
+                   lineColor, lineWidth, lineType,
                    legendLabs, alpha)
     p <- p + scale_fill_manual(values=palette, labels=legendLabs)
 
     p <- p + geom_point(data=pointsDF, aes(x=.data[[names(pointsDF)[1]]],
                                            y=.data[[names(pointsDF)[2]]]),
-                   size=1, shape=pointShape)
+                   size=pointSize, shape=pointShape)
 
     if(!is.null(labelDF))
         p <- labelPoints(p, labelDF, labelSize, labelColor, labelRepulsion,

@@ -7,7 +7,7 @@ NULL
 #'
 #' This function creates a summary of multiple ranks provided for input items.
 #'
-#' @param df A data frame with ranks as columns, items as rows.
+#' @param df A data frame with ranks as columns and items as rows.
 #'
 #' @return A rank summary data frame with three columns: 'Rank', 'Item' and
 #' 'Count'.
@@ -72,15 +72,19 @@ computeMeanRanks <- function(rankDF, sigDigits=2){
 #' @param xLab Label of x axis.
 #' @param sigDigits Number of significant digits used when displaying mean
 #' ranks. If \code{NULL}, the mean ranks will not be displayed.
-#' @param labelSize Size of label marking average rank for each item. Ignored
-#' if \code{showMeanRanks} is \code{FALSE}.
-#' @param labelColor Color of label marking average rank for each item. Ignored
-#' if \code{showMeanRanks} is \code{FALSE}.
+#' @param labelSize Size of label marking average rank for each item.
+#' Ignored if \code{sigDigits} is \code{NULL}.
+#' @param labelColor Color of label marking average rank for each item.
+#' Ignored if \code{sigDigits} is \code{NULL}.
 #' @param labelFace Font face of label marking average rank for each item. Must
-#' be one among 'plain', 'bold', 'italic' and 'bold-italic'. Ignored
-#' if \code{showMeanRanks} is \code{FALSE}.
+#' be one among 'plain', 'bold', 'italic' and 'bold-italic'.
+#' Ignored if \code{sigDigits} is \code{NULL}.
 #' @param xAngle Angle of x axis text.
 #' @param vJust Vertical justification in [0, 1].
+#' @param labelScalingFactor Scaling factor used when displaying mean ranks.
+#' Ignored if \code{sigDigits} is \code{NULL}.
+#' @param labelOffset Vertical offset used when displaying mean ranks.
+#' Ignored if \code{sigDigits} is \code{NULL}.
 #'
 #' @return An object of class \code{gg}.
 #'
@@ -105,6 +109,8 @@ rankPlot <- function(df,
                      labelFace = c('plain', 'bold', 'italic', 'bold-italic'),
                      xAngle = 45,
                      vJust = 0.6,
+                     labelScalingFactor = 0.9,
+                     labelOffset = 0.05,
                      ...){
 
     if(summarize)
@@ -128,7 +134,8 @@ rankPlot <- function(df,
         labelFace <- match.arg(labelFace,
                                c('plain', 'bold', 'italic', 'bold-italic'))
         nRanks <- sum(df[, 3]) / length(unique(df[, 1]))
-        labelHeights <- 0.9 * nRanks * (liver::minmax(meanRanks[, 2]) + 0.05)
+        labelHeights <- labelScalingFactor * nRanks *
+            (liver::minmax(meanRanks[, 2]) + labelOffset)
         p <- p + geom_text(data=meanRanks,
                            aes(x=.data[[names(meanRanks)[1]]],
                                y=labelHeights,

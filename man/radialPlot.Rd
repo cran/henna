@@ -2,43 +2,51 @@
 % Please edit documentation in R/radial_plot.R
 \name{radialPlot}
 \alias{radialPlot}
-\title{Draw radial plot for a degrees data frame}
+\title{Draw radial plot for a data frame with positive integer-valued points}
 \usage{
 radialPlot(
-  degreesDF,
+  valuesDF,
   title = "Radial plot",
-  degreeLegendTitle = "Degree",
+  valueLegendTitle = "Value",
   groupLegendTitle = "Group",
   extraCircles = 0,
-  palette = rpColors(length(unique(degreesDF[, 3]))),
+  palette = rpColors(length(unique(valuesDF[, 3]))),
   labelSize = 3,
   pointSize = 0.8,
+  legendTitleSize = 10,
+  legendTextSize = 10,
   labelRepulsion = 1,
   labelPull = 0,
-  maxOverlaps = 10,
+  maxOverlaps = 15,
+  breakDensity = 6,
+  seed = 50,
   ...
 )
 }
 \arguments{
-\item{degreesDF}{A data frame with names on the first column and
+\item{valuesDF}{A data frame with names on the first column and
 positive integers on the second column.}
 
 \item{title}{Plot title.}
 
-\item{degreeLegendTitle}{Legend title corresponding to the positive integer
+\item{valueLegendTitle}{Legend title corresponding to the positive integer
 column.}
 
 \item{groupLegendTitle}{Legend title corresponding to the categorical
 column.}
 
 \item{extraCircles}{Number of circles drawn beyond those required to include
-the points representing the genes.}
+the points.}
 
 \item{palette}{Color palette.}
 
 \item{labelSize}{Label size.}
 
 \item{pointSize}{Point size.}
+
+\item{legendTitleSize}{Legend title size.}
+
+\item{legendTextSize}{Legend text size.}
 
 \item{labelRepulsion}{Repulsion strength between labels.}
 
@@ -48,20 +56,26 @@ and its data point.}
 \item{maxOverlaps}{Maximum overlaps. Ignored if \code{labelDF}
 is \code{NULL}.}
 
+\item{breakDensity}{Factor used in calculating the number of breaks for
+the values legend. Higher values of this argument add more breaks to the
+legend, but no breaks at a distance below 1 will be allowed.}
+
+\item{seed}{Random seed.}
+
 \item{...}{Other arguments passed to \code{centerTitle}.}
 }
 \value{
 An object of class \code{gg}.
 }
 \description{
-This function draws a radial plot for a degrees data frame, plotting
-positive integer-valued points over concentric circles, with points located
+This function draws a radial plot for a data frame, plotting positive
+integer-valued points over concentric circles, with points located
 more centrally representing higher values.
 }
 \examples{
-degreesDF <- data.frame(Protein = paste0('P', seq(20)),
-Degree = sample(10, 20, replace=TRUE),
+valuesDF <- data.frame(Protein = paste0('P', seq(20)),
+Value = sample(10, 20, replace=TRUE),
 Group = sample(3, 20, replace=TRUE))
-radialPlot(degreesDF)
+radialPlot(valuesDF)
 
 }

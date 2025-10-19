@@ -10,9 +10,11 @@ splitHull(
   hullSegments,
   xInt = NULL,
   yInt = NULL,
-  borderColor = NULL,
+  lineColor = "navy",
+  lineWidth = 0.3,
+  lineType = c("dashed", "solid", "dotted", "dotdash", "longdash", "twodash"),
   legendLabs = paste0("Group ", seq(4)),
-  alpha = 0.5
+  alpha = 0.2
 )
 }
 \arguments{
@@ -26,10 +28,17 @@ splitHull(
 
 \item{yInt}{The coordinate where the horizontal line intersects the y axis.}
 
-\item{borderColor}{The color of the horizontal and vertical dividing lines,
+\item{lineColor}{The color of the horizontal and vertical dividing lines,
 if provided. If \code{NULL}, no dividing lines will be drawn, though the
-hull will still be split along these lines (if \code{xInt}
-and/or \code{yInt}are not \code{NULL}).}
+hull will still be split along these lines if \code{xInt}
+and/or \code{yInt}are not \code{NULL}.}
+
+\item{lineWidth}{The width of the horizontal and vertical dividing lines.
+Ignored if \code{lineColor} is \code{NULL}.}
+
+\item{lineType}{The type of the horizontal and vertical dividing lines.
+Choose between 'dashed','solid', 'dotted', 'dotdash', 'longdash' and
+'twodash'. Default is 'dashed'. Ignored if \code{lineColor} is \code{NULL}.}
 
 \item{legendLabs}{Legend labels.}
 

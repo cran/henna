@@ -34,25 +34,30 @@ test_that("hullPlot works", {
     pointsDF <- data.frame(x = c(1, 2, 4, 7, 10, 12, 13, 15, 16),
                            y = c(1, 1, 2, 3, 3, 2,1, 2, 1))
 
-    expect_equal(length(intersect(is(hullPlot(pointsDF, 'Hull plot', 7, 1.5)),
-                                  c('gg', 'ggplot2::ggplot'))), 1)
+    p <- hullPlot(pointsDF, xInt=9, yInt=2.5, lineColor='maroon', lineWidth=1,
+             lineType='solid')
+    expect_equal(length(intersect(is(p), c('gg', 'ggplot2::ggplot'))), 1)
+
+
+    p <- hullPlot(pointsDF, 'Hull plot', 7, 1.5)
+    expect_equal(length(intersect(is(p), c('gg', 'ggplot2::ggplot'))), 1)
 
     expect_error(hullPlot(pointsDF, 'Hull plot', 1, 2))
     expect_error(hullPlot(pointsDF, 'Hull plot', 4, 2))
 
-    expect_equal(length(intersect(is(hullPlot(pointsDF, 'Hull plot', 4.1, 2)),
-                                  c('gg', 'ggplot2::ggplot'))), 1)
+    p <- hullPlot(pointsDF, 'Hull plot', 4.1, 2)
+    expect_equal(length(intersect(is(p), c('gg', 'ggplot2::ggplot'))), 1)
 
     expect_error(hullPlot(pointsDF, 'Hull plot', 15.5, 1.5))
 
-    expect_equal(length(intersect(is(hullPlot(pointsDF, 'Hull plot',
-                                              15.4, 1.5)),
-                                  c('gg', 'ggplot2::ggplot'))), 1)
+    p <- hullPlot(pointsDF, 'Hull plot',15.4, 1.5)
+    expect_equal(length(intersect(is(p), c('gg', 'ggplot2::ggplot'))), 1)
 
     rownames(pointsDF) <- paste0('P', seq(nrow(pointsDF)))
     labelDF <- pointsDF[c('P1', 'P4', 'P9'), ]
-    expect_equal(length(intersect(is(hullPlot(pointsDF, 'Hull plot', 7, 1.5, labelDF=labelDF)),
-                                  c('gg', 'ggplot2::ggplot'))), 1)
+    p <- hullPlot(pointsDF, 'Hull plot', 7, 1.5,
+                  labelDF=labelDF)
+    expect_equal(length(intersect(is(p), c('gg', 'ggplot2::ggplot'))), 1)
 })
 
 test_that("networkPlot returns a ggraph object", {
@@ -61,13 +66,15 @@ test_that("networkPlot returns a ggraph object", {
                      rank = c(1, 1, 3, 3, 3, 3))
     p <- networkPlot(df)
     expect_equal(is(p), 'ggraph')
+    p <- networkPlot(df, nodeColor='orange', edgeColor='green4')
+    expect_equal(is(p), 'ggraph')
 })
 
 test_that("radialPlot returns a gg object", {
-    degreesDF <- data.frame(Protein = paste0('P', seq(20)),
-                            Degree = sample(10, 20, replace=TRUE),
+    valuesDF <- data.frame(Protein = paste0('P', seq(20)),
+                            Value = sample(10, 20, replace=TRUE),
                             Group = sample(3, 20, replace=TRUE))
-    p <- radialPlot(degreesDF)
+    p <- radialPlot(valuesDF, seed=200, breakDensity=8)
     expect_equal(length(intersect(is(p), c('gg', 'ggplot2::ggplot'))), 1)
 })
 
@@ -76,6 +83,8 @@ test_that("rankPlot returns a gg object", {
     rownames(df) <- paste('M', seq(10))
     colnames(df) <- paste('R', seq(30))
     p <- rankPlot(df)
+    expect_equal(length(intersect(is(p), c('gg', 'ggplot2::ggplot'))), 1)
+    p <- rankPlot(df, sigDigits=2, labelScalingFactor=0.85, labelOffset=0.07)
     expect_equal(length(intersect(is(p), c('gg', 'ggplot2::ggplot'))), 1)
 })
 

@@ -5,14 +5,22 @@ applications as well.
 
 ## Installation
 
-To install `henna`, run the following R code:
+To install the version of `henna` currently available on CRAN, run the 
+following R code:
 
 ```
-if (!require("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-    
-BiocManager::install("andrei-stoica26/henna")
+install.packages("henna")
 ```
+
+Alternatively, you can install the most recent development version 
+using this code:
+
+```
+devtools::install_github("andrei-stoica26/henna")
+```
+
+At present, both versions are the same (`0.3.4`). 
+
 ## Visualization tools
 
 All tools are demonstrated here using the human Baron pancreas (HBP) dataset,
@@ -30,7 +38,7 @@ render selected donor and label information from the HBP dataset:
 
 ### correlationPlot
 
-This function plots a correlation matrix. Here, we use gene expression data
+This function plots a correlation matrix. We use gene expression data
 from the HBP dataset:
 
 ![](man/figures/correlation_plot.png)
@@ -38,8 +46,8 @@ from the HBP dataset:
 ### densityPlot
 
 This function creates a density plot for a set of points, optionally displaying
-segements between each point and its nearest neighbor. We use expression
-data from the HBP dataset, subjected to a distance matrix calculation and
+segements between each point and its nearest neighbor. Here, we subject 
+expression data from the HBP dataset to a distance matrix calculation and
 subsequent MDS reduction in order to generate the coordinates of the points:
 
 ![](man/figures/density_plot.png)
@@ -78,7 +86,7 @@ connected components:
 
 ![](man/figures/radial_plot.png)
 
-### radialPlot
+### rankPlot
 This function aggregates multiple ranks available for a group of items in a 
 single plot. Average ranks can be displayed on the plot. Here, we visualize the
 ranks of 12 genes as markers of the alpha, beta, delta and gamma clusters in 
@@ -86,7 +94,7 @@ the HBP dataset:
 
 ![](man/figures/rank_plot.png)
 
-### radialPlot
+### riverPlot
 This function generates an alluvial plot for a data frame with two categorical 
 columns and a weights column. As an example, it can represent the significance
 overlaps between cell type markers and donor markers in the HBP dataset. 
@@ -96,7 +104,7 @@ Stronger overlaps correspond to thicker connecting curves:
 
 ### tilePlot
 
-This function plots a numeric matrix. Here, we used shared cluster markers as
+This function plots a numeric matrix. Here, we use shared cluster markers as
 an example:
 
 ![](man/figures/tile_plot.png)

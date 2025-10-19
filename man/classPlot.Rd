@@ -30,7 +30,8 @@ value as the first three columns. The latter must be numeric.}
 
 \item{legendLab}{Legend label.}
 
-\item{palette}{grDevices palette.}
+\item{palette}{grDevices palette used for coloring nodes.
+Ignored if nodeColor is not \code{NULL}.}
 
 \item{labelSize}{Label size. Ignored if \code{labelDF} is \code{NULL}.}
 

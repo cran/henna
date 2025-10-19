@@ -29,16 +29,20 @@ networkPlotDF <- function(df,
     return(df)
 }
 
-#' Plot graph with different colors for connected components
+#' Plot graph with the option of using different colors for connected components
 #'
-#' This function plots the graph of the data frame, using different colors for
-#' nodes belonging to different connected components.
+#' This function plots the graph of the data frame and optionallt uses different
+#' colors for nodes belonging to different connected components.
 #'
 #' @inheritParams networkPlotDF
 #' @inheritParams riverPlot
-#' @param nodePointSize Point size of graph nodes.
-#' @param nodeTextSize Text size of graph nodes.
-#' @param palette grDevices palette.
+#' @param nodeSize Size of graph nodes.
+#' @param nodeTextSize Size of text on graph nodes.
+#' @param palette grDevices palette used for coloring nodes.
+#' Ignored if nodeColor is not \code{NULL}.
+#' @param nodeColor Color used for nodes. Default is \code{NULL}
+#' (\code{palette} will instead be used).
+#' @param edgeColor Color used for edges.
 #'
 #' @return An object of class \code{ggraph}.
 #'
@@ -52,8 +56,13 @@ networkPlotDF <- function(df,
 #'
 networkPlot <- function(df, title = 'Network plot',
                         rankCol = 'rank',
-                        edgeScale = 2, nodePointSize = 10, nodeTextSize = 2.3,
-                        palette = 'Pastel 1', ...){
+                        edgeScale = 2,
+                        nodeSize = 10,
+                        nodeTextSize = 2.3,
+                        palette = 'Spectral',
+                        nodeColor = NULL,
+                        edgeColor = 'black',
+                        ...){
     df <- networkPlotDF(df, rankCol, edgeScale)
     tblGraph <- as_tbl_graph(df, directed=FALSE)
     df <- connectedComponents(df)
@@ -61,13 +70,17 @@ networkPlot <- function(df, title = 'Network plot',
     nComp <- length(unique(vertexComp))
     tblGraph <- mutate(activate(tblGraph, "vertices"),"component" = vertexComp)
     p <- ggraph(tblGraph, layout="nicely") +
-        geom_edge_link(aes(width=.data[["weight"]])) +
+        geom_edge_link(aes(width=.data[["weight"]]), color=edgeColor) +
         scale_edge_width(range=c(0.1, 0.3)) +
-        geom_node_point(aes(color=.data[["component"]]), size=nodePointSize) +
-        geom_node_text(aes(label=.data[["name"]]), size=nodeTextSize) +
         theme_void() +
         theme(legend.position='none') +
         scale_color_manual(values=hcl.colors(nComp, palette))
+    if (is.null(nodeColor))
+        p <- p + geom_node_point(aes(color=.data[["component"]]),
+                                 size=nodeSize) else
+                                 p <- p + geom_node_point(color=nodeColor,
+                                                          size=nodeSize)
+    p <- p + geom_node_text(aes(label=.data[["name"]]), size=nodeTextSize)
     p <- centerTitle(p, title, ...)
     return(p)
 }

@@ -9,13 +9,16 @@ hullPlot(
   title = "Hull plot",
   xInt = NULL,
   yInt = NULL,
-  borderColor = NULL,
   palette = hpColors(),
+  lineColor = "navy",
+  lineWidth = 0.3,
+  lineType = c("dashed", "solid", "dotted", "dotdash", "longdash", "twodash"),
   hullWidth = 0,
   xLab = "x",
   yLab = "y",
   legendLabs = paste0("Group ", seq(4)),
   legendPos = "bottom",
+  pointSize = 1,
   pointShape = 4,
   alpha = 0.2,
   labelDF = NULL,
@@ -36,12 +39,19 @@ hullPlot(
 
 \item{yInt}{The coordinate where the horizontal line intersects the y axis.}
 
-\item{borderColor}{The color of the horizontal and vertical dividing lines,
-if provided. If \code{NULL}, no dividing lines will be drawn, though the
-hull will still be split along these lines (if \code{xInt}
-and/or \code{yInt}are not \code{NULL}).}
-
 \item{palette}{Color palette.}
+
+\item{lineColor}{The color of the horizontal and vertical dividing lines,
+if provided. If \code{NULL}, no dividing lines will be drawn, though the
+hull will still be split along these lines if \code{xInt}
+and/or \code{yInt}are not \code{NULL}.}
+
+\item{lineWidth}{The width of the horizontal and vertical dividing lines.
+Ignored if \code{lineColor} is \code{NULL}.}
+
+\item{lineType}{The type of the horizontal and vertical dividing lines.
+Choose between 'dashed','solid', 'dotted', 'dotdash', 'longdash' and
+'twodash'. Default is 'dashed'. Ignored if \code{lineColor} is \code{NULL}.}
 
 \item{hullWidth}{Width of the convex hull. If 0 (as default), the convex
 hull will not be displayed.}
@@ -53,6 +63,8 @@ hull will not be displayed.}
 \item{legendLabs}{Legend labels.}
 
 \item{legendPos}{Legend position.}
+
+\item{pointSize}{Point size.}
 
 \item{pointShape}{Point shape.}
 

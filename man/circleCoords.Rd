@@ -2,22 +2,22 @@
 % Please edit documentation in R/radial_plot.R
 \name{circleCoords}
 \alias{circleCoords}
-\title{Store the radii of the circles and the corresponding number of edges}
+\title{Store the radii of the circles and the corresponding values}
 \usage{
 circleCoords(itemCoordsDF, extraCircles = 0)
 }
 \arguments{
-\item{itemCoordsDF}{Dataframe wih item coordinates}
+\item{itemCoordsDF}{Data frame wih item coordinates.}
 
 \item{extraCircles}{Number of circles drawn beyond those required to include
-the points representing the genes.}
+the points.}
 }
 \value{
-A data frame containing the radius and the number of edges for each
-circle.
+A data frame containing the radius and the corresponding value for
+each circle.
 }
 \description{
-This function stores the radii of the circles and the corresponding number
-of edges.
+This function stores the radii of the circles and the corresponding value
+for each circle.
 }
 \keyword{internal}

@@ -2,22 +2,24 @@
 % Please edit documentation in R/radial_plot.R
 \name{distFreq}
 \alias{distFreq}
-\title{Map degrees to distances from the center and find the frequency of these
+\title{Map values to distances from the center and find the frequency of these
 distances}
 \usage{
-distFreq(degreesDF)
+distFreq(valuesDF)
 }
 \arguments{
-\item{degreesDF}{A data frame with names on the first column and
+\item{valuesDF}{A data frame with names on the first column and
 positive integers on the second column.}
 }
 \value{
 A data frame of distance frequencies.
 }
 \description{
-This function interprets degrees as distances from a center (high
-degrees = low distances) and calculates the frequencies of these distances.
-Used later to draw concentric circles with the frequencies representing the
-number of points on a circle of the same radius.
+This function interprets values as distances from a center (high
+values = low distances) and calculates the frequencies of these distances.
+}
+\details{
+Used later to draw concentric circles with the frequencies
+representing the number of points on a circle of the same radius.
 }
 \keyword{internal}

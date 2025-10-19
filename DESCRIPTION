@@ -1,7 +1,7 @@
 Package: henna
 Type: Package
 Title: A Versatile Visualization Suite
-Version: 0.2.5
+Version: 0.3.4
 Authors@R: person('Andrei-Florian', 'Stoica', 
       email='andreistoica@foxmail.com',
      role=c('aut','cre'),
@@ -15,15 +15,15 @@ Description: A visualization suite primarily designed for single-cell
 License: MIT + file LICENSE
 Imports: abdiv, dplyr, ggalluvial, ggeasy, ggforce, ggraph, ggnewscale,
         ggplot2, ggrepel, grDevices, liver, methods, reshape2, rlang,
-        stats, tidygraph, viridis
+        stats, tidygraph, viridis, withr
 Encoding: UTF-8
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Suggests: testthat (>= 3.0.0)
 Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2025-09-14 00:56:56 UTC; Andrei
+Packaged: 2025-10-19 15:46:30 UTC; Andrei
 Author: Andrei-Florian Stoica [aut, cre] (ORCID:
     <https://orcid.org/0000-0002-5253-0826>)
 Maintainer: Andrei-Florian Stoica <andreistoica@foxmail.com>
 Repository: CRAN
-Date/Publication: 2025-09-18 08:50:07 UTC
+Date/Publication: 2025-10-19 16:00:02 UTC

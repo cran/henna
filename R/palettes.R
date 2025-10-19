@@ -7,8 +7,12 @@
 #'
 #' @export
 #'
-dpColors <- function(palette = c('sea', 'lava')){
-    palette <- match.arg(palette, c('sea', 'lava'))
+dpColors <- function(palette = c('oasis', 'sea', 'lava')){
+    palette <- match.arg(palette, c('oasis', 'sea', 'lava'))
+    if (palette == 'oasis')
+        return(c('navajowhite1','bisque1','wheat1',
+                 'darkolivegreen1','palegreen','green',
+                 'cadetblue1', 'turquoise1', 'cyan'))
     if (palette == 'sea')
         return(c('midnightblue','dodgerblue4','dodgerblue3',
                  'dodgerblue2','deepskyblue','cyan2',

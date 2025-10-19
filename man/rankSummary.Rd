@@ -7,7 +7,7 @@
 rankSummary(df)
 }
 \arguments{
-\item{df}{A data frame with ranks as columns, items as rows.}
+\item{df}{A data frame with ranks as columns and items as rows.}
 }
 \value{
 A rank summary data frame with three columns: 'Rank', 'Item' and

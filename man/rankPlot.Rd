@@ -18,6 +18,8 @@ rankPlot(
   labelFace = c("plain", "bold", "italic", "bold-italic"),
   xAngle = 45,
   vJust = 0.6,
+  labelScalingFactor = 0.9,
+  labelOffset = 0.05,
   ...
 )
 }
@@ -43,19 +45,25 @@ Must be set to \code{FALSE} if the input data frame has been generated with
 \item{sigDigits}{Number of significant digits used when displaying mean
 ranks. If \code{NULL}, the mean ranks will not be displayed.}
 
-\item{labelSize}{Size of label marking average rank for each item. Ignored
-if \code{showMeanRanks} is \code{FALSE}.}
+\item{labelSize}{Size of label marking average rank for each item.
+Ignored if \code{sigDigits} is \code{NULL}.}
 
-\item{labelColor}{Color of label marking average rank for each item. Ignored
-if \code{showMeanRanks} is \code{FALSE}.}
+\item{labelColor}{Color of label marking average rank for each item.
+Ignored if \code{sigDigits} is \code{NULL}.}
 
 \item{labelFace}{Font face of label marking average rank for each item. Must
-be one among 'plain', 'bold', 'italic' and 'bold-italic'. Ignored
-if \code{showMeanRanks} is \code{FALSE}.}
+be one among 'plain', 'bold', 'italic' and 'bold-italic'.
+Ignored if \code{sigDigits} is \code{NULL}.}
 
 \item{xAngle}{Angle of x axis text.}
 
 \item{vJust}{Vertical justification in [0, 1].}
+
+\item{labelScalingFactor}{Scaling factor used when displaying mean ranks.
+Ignored if \code{sigDigits} is \code{NULL}.}
+
+\item{labelOffset}{Vertical offset used when displaying mean ranks.
+Ignored if \code{sigDigits} is \code{NULL}.}
 
 \item{...}{Other arguments passed to \code{centerTitle}.}
 }

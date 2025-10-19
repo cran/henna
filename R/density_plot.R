@@ -74,7 +74,7 @@ createPairSegments <- function(df){
 #'
 densityPlot <- function(df,
                         title = 'Density plot',
-                        colorScheme = c('sea', 'lava', 'custom'),
+                        colorScheme = c('oasis', 'sea', 'lava', 'custom'),
                         useSchemeDefaults = FALSE,
                         drawNN = TRUE,
                         drawScores = FALSE,
@@ -96,10 +96,19 @@ densityPlot <- function(df,
                         verbose = FALSE,
                         ...){
 
-    colorScheme <- match.arg(colorScheme, c('sea', 'lava', 'custom'))
+    colorScheme <- match.arg(colorScheme, c('oasis', 'sea', 'lava', 'custom'))
     segType <- match.arg(segType, c('dashed','solid', 'dotted',
                                     'dotdash', 'longdash', 'twodash'))
     legendPos <- match.arg(legendPos, c('right', 'none'))
+
+    if (colorScheme == 'oasis'){
+        palette <- dpColors('oasis')
+        if (useSchemeDefaults){
+            segColor <- 'plum1'
+            pointColor <- 'red'
+            labelColor <- 'black'
+        }
+    }
 
     if (colorScheme == 'sea'){
         palette <- dpColors('sea')
