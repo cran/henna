@@ -2,7 +2,7 @@
 % Please edit documentation in R/geometry.R
 \name{connectedComponents}
 \alias{connectedComponents}
-\title{Find the connected components of a graph data frame}
+\title{Find the connected components of a graph represented as a data frame}
 \usage{
 connectedComponents(df, colName = "component")
 }
@@ -17,7 +17,8 @@ A data frame with a column indicating the connected component of
 each edge.
 }
 \description{
-This function finds the connected components of a graph data frame.
+This function finds the connected components of a graph represented as
+a data frame.
 }
 \examples{
 df <- data.frame(

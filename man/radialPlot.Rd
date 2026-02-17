@@ -6,9 +6,9 @@
 \usage{
 radialPlot(
   valuesDF,
-  title = "Radial plot",
+  title = NULL,
   valueLegendTitle = "Value",
-  groupLegendTitle = "Group",
+  groupLegendTitle = NULL,
   extraCircles = 0,
   palette = rpColors(length(unique(valuesDF[, 3]))),
   labelSize = 3,
@@ -53,8 +53,7 @@ the points.}
 \item{labelPull}{Attraction strength between a text label
 and its data point.}
 
-\item{maxOverlaps}{Maximum overlaps. Ignored if \code{labelDF}
-is \code{NULL}.}
+\item{maxOverlaps}{Maximum number of allowed overlaps.}
 
 \item{breakDensity}{Factor used in calculating the number of breaks for
 the values legend. Higher values of this argument add more breaks to the
@@ -62,7 +61,7 @@ legend, but no breaks at a distance below 1 will be allowed.}
 
 \item{seed}{Random seed.}
 
-\item{...}{Other arguments passed to \code{centerTitle}.}
+\item{...}{Additional arguments passed to \code{centerTitle}.}
 }
 \value{
 An object of class \code{gg}.
@@ -76,6 +75,6 @@ more centrally representing higher values.
 valuesDF <- data.frame(Protein = paste0('P', seq(20)),
 Value = sample(10, 20, replace=TRUE),
 Group = sample(3, 20, replace=TRUE))
-radialPlot(valuesDF)
+radialPlot(valuesDF, groupLegendTitle='Group')
 
 }

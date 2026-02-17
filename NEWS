@@ -1,3 +1,8 @@
-Changes in version 0.2.0 (2025-09-14)
+Changes in version 0.3.4 (2025-10-19)
 -------------------------------------------------------------------------------
-- Submitted to CRAN
+- Updated existing plotting functions for additional versatility
+
+
+Changes in version 0.2.5 (2025-09-18)
+-------------------------------------------------------------------------------
+- The package became available on CRAN

@@ -2,55 +2,66 @@
 % Please edit documentation in R/class_plot.R
 \name{classPlot}
 \alias{classPlot}
-\title{Plot item bars grouped by class}
+\title{Plot bars for item counts grouped and colored by class}
 \usage{
 classPlot(
   df,
-  title = "Class plot",
+  title = NULL,
   xLab = "Value",
   yLab = "Item",
-  legendLab = "Class",
+  legendTitle = "Class",
   palette = "Spectral",
   labelSize = 2.5,
   labelColor = "black",
+  legendTitleSize = 10,
+  legendTextSize = 10,
+  axisTextSize = 12,
+  axisTitleSize = 12,
   decreasing = TRUE,
   valueCutoff = 0,
   ...
 )
 }
 \arguments{
-\item{df}{A data frame with at least three columns, with class, item and
-value as the first three columns. The latter must be numeric.}
+\item{df}{A data frame with at least three columns. Its first column
+(categorical) colors the plot bars. The second column (categorical)
+labels the plots bars. The third column (numeric) sets the bar lengths.}
 
 \item{title}{Plot title.}
 
-\item{xLab}{Label of x axis.}
+\item{xLab}{x axis label.}
 
-\item{yLab}{Label of y axis.}
+\item{yLab}{y axis label.}
 
-\item{legendLab}{Legend label.}
+\item{legendTitle}{Legend title.}
 
-\item{palette}{grDevices palette used for coloring nodes.
-Ignored if nodeColor is not \code{NULL}.}
+\item{palette}{Color palette.}
 
-\item{labelSize}{Label size. Ignored if \code{labelDF} is \code{NULL}.}
+\item{labelSize}{Label size.}
 
 \item{labelColor}{Label color.}
+
+\item{legendTitleSize}{Legend title size.}
+
+\item{legendTextSize}{Legend text size.}
+
+\item{axisTextSize}{Axis text size.}
+
+\item{axisTitleSize}{Axis title size.}
 
 \item{decreasing}{Whether to display the bars in decreasing order of length.}
 
 \item{valueCutoff}{Cutoff used for filtering the input data frame based on
-the value column. Only values greater than this cutoff will be displayed on
+the third (value) column. Only values above this cutoff will be displayed on
 the plot.}
 
-\item{...}{Other arguments passed to \code{centerTitle}.}
+\item{...}{Additional arguments passed to \code{centerTitle}.}
 }
 \value{
 An object of class \code{gg}.
 }
 \description{
-This function plots bars for each item while grouping them by class and
-ordering them.
+This function plots bars for item counts grouped and colored by class.
 }
 \examples{
  df <- data.frame(Class = sample(paste0('C', seq(13)), 25, replace=TRUE),

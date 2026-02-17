@@ -17,7 +17,13 @@ test_that("correlationPlot returns a ggplot object", {
     colnames(mat) <- paste0('I', seq(10))
     mat <- round(cor(mat), 2)
     p <- correlationPlot(mat)
+    class(p)
     expect_equal(length(intersect(is(p), c('gg', 'ggplot2::ggplot'))), 1)
+})
+
+test_that('a', {
+    x <- 2
+    expect_equal(x, 2)
 })
 
 test_that("densityPlot returns a ggplot object", {
@@ -63,7 +69,12 @@ test_that("hullPlot works", {
 test_that("networkPlot returns a ggraph object", {
     df <- data.frame(gene1 = paste0('G', c(1, 2, 5, 6, 7, 17)),
                      gene2 = paste0('G', c(2, 5, 8, 11, 11, 11)),
-                     rank = c(1, 1, 3, 3, 3, 3))
+                     rank = c(1, 1, 3, 3, 3, 3),
+                     weight = c(8, 2, 1, 12, 3, 4))
+    p <- networkPlot(df, numCol='rank', numColType='ranks')
+    expect_equal(is(p), 'ggraph')
+    p <- networkPlot(df, numCol='weight', numColType='weights')
+    expect_equal(is(p), 'ggraph')
     p <- networkPlot(df)
     expect_equal(is(p), 'ggraph')
     p <- networkPlot(df, nodeColor='orange', edgeColor='green4')
@@ -80,8 +91,8 @@ test_that("radialPlot returns a gg object", {
 
 test_that("rankPlot returns a gg object", {
     df <- do.call(cbind, lapply(seq(30), function(i) sample(10, 10)))
-    rownames(df) <- paste('M', seq(10))
-    colnames(df) <- paste('R', seq(30))
+    rownames(df) <- paste0('M', seq(10))
+    colnames(df) <- paste0('R', seq(30))
     p <- rankPlot(df)
     expect_equal(length(intersect(is(p), c('gg', 'ggplot2::ggplot'))), 1)
     p <- rankPlot(df, sigDigits=2, labelScalingFactor=0.85, labelOffset=0.07)
@@ -96,6 +107,13 @@ test_that("riverPlot returns a gg object", {
                      z = runif(20, 1, 3))
     p <- riverPlot(df)
     expect_equal(length(intersect(is(p), c('gg', 'ggplot2::ggplot'))), 1)
+})
+
+test_that("reorderDF works", {
+    df <- data.frame(a = c(2, 4, 1, 3), b = c(2, 8, 3, 19))
+    df <- reorderDF(df)
+    expect_identical(df[, 1], c(1, 2, 3, 4))
+    expect_identical(df[, 2], factor(c(3, 2, 19, 8), levels=c(3, 2, 19, 8)))
 })
 
 test_that("tilePlot returns a gg object", {
@@ -166,4 +184,18 @@ test_that("isPointOnBoundary works", {
     hullSegments <- pointsToSegments(hull)
     expect_false(isPointOnBoundary(2, 3, hullSegments))
     expect_true(isPointOnBoundary(12, 2.6, hullSegments))
+})
+
+test_that("volcanoPlot returns a gg object", {
+    filePath <- system.file('extdata', 'volcanoPlot.qs2', package='henna')
+    df <- qs2::qs_read(filePath)
+    if (requireNamespace("EnhancedVolcano", quietly=TRUE)){
+        p <- volcanoPlot(df,
+                         title='Volcano plot - beta cells',
+                         pvalThr=1e-10,
+                         logFCThr=1,
+                         labPvalThr=1e-150,
+                         labLogFCThr=5.3)
+        expect_equal(length(intersect(is(p), c('gg', 'ggplot2::ggplot'))), 1)
+    } else expect_error(volcanoPlot(df))
 })

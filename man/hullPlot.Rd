@@ -6,7 +6,7 @@
 \usage{
 hullPlot(
   pointsDF,
-  title = "Hull plot",
+  title = NULL,
   xInt = NULL,
   yInt = NULL,
   palette = hpColors(),
@@ -14,19 +14,26 @@ hullPlot(
   lineWidth = 0.3,
   lineType = c("dashed", "solid", "dotted", "dotdash", "longdash", "twodash"),
   hullWidth = 0,
-  xLab = "x",
-  yLab = "y",
+  xLab = NULL,
+  yLab = NULL,
   legendLabs = paste0("Group ", seq(4)),
-  legendPos = "bottom",
   pointSize = 1,
   pointShape = 4,
   alpha = 0.2,
-  labelDF = NULL,
+  labeledPoints = NULL,
+  labelOutside = FALSE,
+  labXThr = NULL,
+  labYThr = NULL,
+  labelType = c("free", "boxed"),
   labelSize = 2.5,
   labelColor = "black",
   labelRepulsion = 1,
   labelPull = 0,
   maxOverlaps = 10,
+  legendPos = "bottom",
+  legendTextSize = 10,
+  axisTextSize = 12,
+  axisTitleSize = 12,
   ...
 )
 }
@@ -56,21 +63,31 @@ Choose between 'dashed','solid', 'dotted', 'dotdash', 'longdash' and
 \item{hullWidth}{Width of the convex hull. If 0 (as default), the convex
 hull will not be displayed.}
 
-\item{xLab}{Label of x axis.}
+\item{xLab}{x axis label.}
 
-\item{yLab}{Label of y axis.}
+\item{yLab}{y axis label.}
 
 \item{legendLabs}{Legend labels.}
-
-\item{legendPos}{Legend position.}
 
 \item{pointSize}{Point size.}
 
 \item{pointShape}{Point shape.}
 
-\item{alpha}{Opaqueness level for the colors of the alluvia.}
+\item{alpha}{Opaqueness level.}
 
-\item{labelDF}{Label data frame.}
+\item{labeledPoints}{Point labels to be displayed on the plot.}
+
+\item{labelOutside}{Display labels for points specified by
+\code{labeledPoints} even if they fall outside the boundaries imposed by
+\code{labXThr} and \code{labYThr}. Ignored if \code{labeledPoints} is
+\code{NULL} or both \code{labXThr} and \code{labYThr} are \code{NULL}.}
+
+\item{labXThr}{Threshold used to plot labels based on \code{xCol} values.}
+
+\item{labYThr}{Threshold used to plot labels based on \code{yCol} values.}
+
+\item{labelType}{Whether to draw a box around labels (option 'boxed') or not
+(option 'free'). Default is 'free'.}
 
 \item{labelSize}{Label size. Ignored if \code{labelDF} is \code{NULL}.}
 
@@ -84,7 +101,15 @@ and its data point.}
 \item{maxOverlaps}{Maximum overlaps. Ignored if \code{labelDF}
 is \code{NULL}.}
 
-\item{...}{Other arguments passed to \code{centerTitle}.}
+\item{legendPos}{Legend position.}
+
+\item{legendTextSize}{Legend text size.}
+
+\item{axisTextSize}{Axis text size.}
+
+\item{axisTitleSize}{Axis title size.}
+
+\item{...}{Additional arguments passed to \code{centerTitle}.}
 }
 \value{
 An object of class \code{gg}.

@@ -6,17 +6,13 @@ NULL
 #'
 #' This function creates an alluvial plot.
 #'
+#' @inheritParams documentFun
 #' @param df A data frame with two categorical columns and a numeric column.
-#' @param title Plot title.
 #' @param fillColIndex Index of column used for coloring the alluvia.
 #' @param curveType Curve type.
 #' @param alpha Opaqueness level for the colors of the alluvia.
 #' @param strataFill Color used for the strata.
 #' @param labelSize Size of labels of strata elements.
-#' @param viridisPal Viridis palette.
-#' @param legendPos Legend position.
-#' @param margins Plot margins. Must be a vector of size 4 listing the desired
-#' top, right, bottom and left margin, in that order.
 #' @param ... Other arguments passed to \code{centerTitle}.
 #'
 #' @return An object of class \code{gg}.
@@ -32,15 +28,15 @@ NULL
 #' @export
 #'
 riverPlot <- function(df,
-                      title = 'River plot',
+                      title = NULL,
                       fillColIndex = 2,
                       curveType = 'sigmoid',
                       alpha = 0.8,
                       strataFill = 'lightgoldenrod1',
                       labelSize = 3,
+                      axisTextSize = 12,
+                      axisTitleSize = 12,
                       viridisPal = 'turbo',
-                      legendPos = 'none',
-                      margins = margin(0, -10, -10, -10),
                       ...){
     p <- ggplot(data=df, aes(axis1=.data[[names(df)[1]]],
                              axis2=.data[[names(df)[2]]],
@@ -53,8 +49,7 @@ riverPlot <- function(df,
                   size=labelSize) +
         scale_fill_viridis_d(option=viridisPal) +
         theme_void() +
-        theme(legend.position=legendPos,
-              plot.margin=margins)
+        theme(legend.position='none')
     p <- centerTitle(p, title, ...)
     return(p)
 }

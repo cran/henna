@@ -6,25 +6,37 @@
 \usage{
 densityPlot(
   df,
-  title = "Density plot",
-  colorScheme = c("oasis", "sea", "lava", "custom"),
-  useSchemeDefaults = FALSE,
+  title = NULL,
+  colorScheme = c("cloudy", "cake", "grapes", "lava", "oasis", "orichalc", "sea", "sky",
+    "custom"),
+  useSchemeDefaults = TRUE,
   drawNN = TRUE,
   drawScores = FALSE,
+  xLab = NULL,
+  yLab = NULL,
+  legendTitle = "Density",
   palette = NULL,
-  segColor = "plum1",
-  pointSize = 0.8,
+  segColor = "black",
+  pointSize = 1,
   pointColor = "red",
   segType = c("dashed", "solid", "dotted", "dotdash", "longdash", "twodash"),
   segWidth = 0.4,
-  legendPos = c("right", "none"),
   nGridPoints = 300,
   expandPerc = 20,
-  labelSize = 2.5,
+  labelType = c("free", "boxed"),
+  labelSize = 3,
   labelColor = "black",
   labelRepulsion = 1,
   labelPull = 1,
-  maxOverlaps = Inf,
+  maxOverlaps = 10,
+  labelPadding = 0,
+  boxPadding = 0,
+  labelSegWidth = 0.4,
+  legendPos = c("right", "none"),
+  legendTextSize = 10,
+  legendTitleSize = 10,
+  axisTextSize = 12,
+  axisTitleSize = 12,
   verbose = FALSE,
   ...
 )
@@ -37,10 +49,11 @@ column as a character vector with elements selected from the rownames.}
 
 \item{title}{Plot title.}
 
-\item{colorScheme}{Color scheme.}
+\item{colorScheme}{Color scheme. Choose between 'cake', 'cloudy', 'grapes',
+'lava', oasis', 'orichalc', 'sea', 'sky' and 'custom'. Default is 'cloudy'.}
 
 \item{useSchemeDefaults}{Whether to use the default \code{segColor},
-\code{pointColor} and \code{labelColor} for scheme. Ignored
+\code{pointColor} and \code{labelColor} values for scheme. Ignored
 if \code{colorScheme} is set to 'custom'.}
 
 \item{drawNN}{Whether to draw segments linking each point to its nearest
@@ -50,7 +63,14 @@ neighbor.}
 \code{TRUE}, the third column of the input data frame will be numeric and
 scores will be taken from there.}
 
-\item{palette}{Color palette. Used only if color scheme is set to 'custom'.}
+\item{xLab}{x axis label.}
+
+\item{yLab}{y axis label.}
+
+\item{legendTitle}{Legend title.}
+
+\item{palette}{A character vector of colors. Used only if color scheme is
+set to 'custom'.}
 
 \item{segColor}{Nearest neighbor segment color. Ignored if \code{drawNN} is
 set to \code{FALSE}, or if \code{useSchemeDefaults} is \code{TRUE} and
@@ -61,20 +81,21 @@ set to \code{FALSE}, or if \code{useSchemeDefaults} is \code{TRUE} and
 \item{pointColor}{Point color. Ignored if \code{useSchemeDefaults}
 is \code{TRUE} and \code{colorScheme} is different from 'custom'.}
 
-\item{segType}{Nearest neighbor segment type. Must choose between 'solid',
+\item{segType}{Nearest neighbor segment type. Choose between 'solid',
 'dashed', 'dotted','dotdash', 'longdash' and 'twodash'. Ignored if
 \code{drawNN} is set to \code{FALSE}.}
 
 \item{segWidth}{Nearest neighbor segment width. Ignored if \code{drawNN} is
 set to \code{FALSE}.}
 
-\item{legendPos}{Legend position. Choose between 'right' and 'none'.}
-
 \item{nGridPoints}{Number of grid points in each direction.}
 
 \item{expandPerc}{Percentage by which the grid will be expanded.}
 
-\item{labelSize}{Size of labels of strata elements.}
+\item{labelType}{Whether to draw a box around labels (option 'boxed') or not
+(option 'free'). Default is 'free'.}
+
+\item{labelSize}{Label size.}
 
 \item{labelColor}{Label color. Ignored if \code{useSchemeDefaults}
 is \code{TRUE} and \code{colorScheme} is different from 'custom'.}
@@ -84,11 +105,27 @@ is \code{TRUE} and \code{colorScheme} is different from 'custom'.}
 \item{labelPull}{Attraction strength between a text label
 and its data point.}
 
-\item{maxOverlaps}{Maximum overlaps.}
+\item{maxOverlaps}{Maximum number of allowed overlaps.}
+
+\item{labelPadding}{Amount of padding around label.}
+
+\item{boxPadding}{Amount of padding around box.}
+
+\item{labelSegWidth}{Thickness of segment connecting label to point.}
+
+\item{legendPos}{Legend position. Choose between 'right' and 'none'.}
+
+\item{legendTextSize}{Legend text size.}
+
+\item{legendTitleSize}{Legend title size.}
+
+\item{axisTextSize}{Axis text size.}
+
+\item{axisTitleSize}{Axis title size.}
 
 \item{verbose}{Whether output should be verbose.}
 
-\item{...}{Other arguments passed to \code{centerTitle}.}
+\item{...}{Additional arguments passed to \code{centerTitle}.}
 }
 \value{
 An object of class \code{gg}.

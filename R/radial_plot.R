@@ -2,7 +2,7 @@
 #' @importFrom ggeasy easy_remove_axes
 #' @importFrom ggforce geom_circle
 #' @importFrom ggnewscale new_scale_color new_scale_fill
-#' @importFrom ggrepel geom_text_repel
+#' @importFrom ggrepel geom_label_repel geom_text_repel
 #' @importFrom viridis scale_color_viridis scale_fill_viridis
 #' @importFrom withr with_seed
 #'
@@ -126,19 +126,14 @@ circleCoords <- function(itemCoordsDF, extraCircles = 0){
 #' more centrally representing higher values.
 #'
 #' @inheritParams distFreq
-#' @inheritParams riverPlot
-#' @inheritParams hullPlot
+#' @inheritParams documentFun
+#' @inheritParams circleCoords
+#' @inheritParams pointsOnCircle
+#' @inheritParams labelPoints
 #' @param valueLegendTitle Legend title corresponding to the positive integer
 #' column.
 #' @param groupLegendTitle Legend title corresponding to the categorical
 #' column.
-#' @inheritParams circleCoords
-#' @param palette Color palette.
-#' @param labelSize Label size.
-#' @param pointSize Point size.
-#' @param legendTitleSize Legend title size.
-#' @param legendTextSize Legend text size.
-#' @inheritParams pointsOnCircle
 #' @param breakDensity Factor used in calculating the number of breaks for
 #' the values legend. Higher values of this argument add more breaks to the
 #' legend, but no breaks at a distance below 1 will be allowed.
@@ -149,14 +144,14 @@ circleCoords <- function(itemCoordsDF, extraCircles = 0){
 #' valuesDF <- data.frame(Protein = paste0('P', seq(20)),
 #' Value = sample(10, 20, replace=TRUE),
 #' Group = sample(3, 20, replace=TRUE))
-#' radialPlot(valuesDF)
+#' radialPlot(valuesDF, groupLegendTitle='Group')
 #'
 #' @export
 #'
 radialPlot <- function(valuesDF,
-                       title = 'Radial plot',
+                       title = NULL,
                        valueLegendTitle = 'Value',
-                       groupLegendTitle = 'Group',
+                       groupLegendTitle = NULL,
                        extraCircles = 0,
                        palette = rpColors(length(unique(valuesDF[, 3]))),
                        labelSize = 3,

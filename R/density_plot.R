@@ -25,29 +25,31 @@ createPairSegments <- function(df){
 #'
 #' This function creates a density plot.
 #'
-#' @inheritParams riverPlot
+#' @inheritParams documentFun
+#' @inheritParams labelPoints
 #' @param df A data frame with at least two columns, representing the \code{x}
 #' and \code{y} coordinates of the points. A score column can also be provided
 #' as the third column. Nearest neighbor information can be provided in the last
 #' column as a character vector with elements selected from the rownames.
-#' @inheritParams riverPlot
-#' @param colorScheme Color scheme.
+#' @param colorScheme Color scheme. Choose between 'cake', 'cloudy', 'grapes',
+#' 'lava', oasis', 'orichalc', 'sea', 'sky' and 'custom'. Default is 'cloudy'.
 #' @param useSchemeDefaults Whether to use the default \code{segColor},
-#' \code{pointColor} and \code{labelColor} for scheme. Ignored
+#' \code{pointColor} and \code{labelColor} values for scheme. Ignored
 #' if \code{colorScheme} is set to 'custom'.
 #' @param drawNN Whether to draw segments linking each point to its nearest
 #' neighbor.
 #' @param drawScores Whether to render scores on the plot. If set to
 #' \code{TRUE}, the third column of the input data frame will be numeric and
 #' scores will be taken from there.
-#' @param palette Color palette. Used only if color scheme is set to 'custom'.
+#' @param palette A character vector of colors. Used only if color scheme is
+#' set to 'custom'.
 #' @param segColor Nearest neighbor segment color. Ignored if \code{drawNN} is
 #' set to \code{FALSE}, or if \code{useSchemeDefaults} is \code{TRUE} and
 #' \code{colorScheme} is different from 'custom'.
 #' @param pointSize Point size.
 #' @param pointColor Point color. Ignored if \code{useSchemeDefaults}
 #' is \code{TRUE} and \code{colorScheme} is different from 'custom'.
-#' @param segType Nearest neighbor segment type. Must choose between 'solid',
+#' @param segType Nearest neighbor segment type. Choose between 'solid',
 #' 'dashed', 'dotted','dotdash', 'longdash' and 'twodash'. Ignored if
 #' \code{drawNN} is set to \code{FALSE}.
 #' @param segWidth Nearest neighbor segment width. Ignored if \code{drawNN} is
@@ -55,7 +57,6 @@ createPairSegments <- function(df){
 #' @param legendPos Legend position. Choose between 'right' and 'none'.
 #' @param nGridPoints Number of grid points in each direction.
 #' @param expandPerc Percentage by which the grid will be expanded.
-#' @inheritParams labelPoints
 #' @param labelColor Label color. Ignored if \code{useSchemeDefaults}
 #' is \code{TRUE} and \code{colorScheme} is different from 'custom'.
 #' @param verbose Whether output should be verbose.
@@ -73,65 +74,62 @@ createPairSegments <- function(df){
 #' @export
 #'
 densityPlot <- function(df,
-                        title = 'Density plot',
-                        colorScheme = c('oasis', 'sea', 'lava', 'custom'),
-                        useSchemeDefaults = FALSE,
+                        title = NULL,
+                        colorScheme = c('cloudy', 'cake', 'grapes', 'lava',
+                                        'oasis', 'orichalc', 'sea', 'sky',
+                                        'custom'),
+                        useSchemeDefaults = TRUE,
                         drawNN = TRUE,
                         drawScores = FALSE,
+                        xLab = NULL,
+                        yLab = NULL,
+                        legendTitle = 'Density',
                         palette = NULL,
-                        segColor = 'plum1',
-                        pointSize = 0.8,
+                        segColor = 'black',
+                        pointSize = 1,
                         pointColor = 'red',
                         segType = c('dashed','solid', 'dotted',
                                     'dotdash', 'longdash', 'twodash'),
                         segWidth = 0.4,
-                        legendPos = c('right', 'none'),
                         nGridPoints = 300,
                         expandPerc = 20,
-                        labelSize = 2.5,
+                        labelType = c('free', 'boxed'),
+                        labelSize = 3,
                         labelColor = 'black',
                         labelRepulsion = 1,
                         labelPull = 1,
-                        maxOverlaps = Inf,
+                        maxOverlaps = 10,
+                        labelPadding = 0,
+                        boxPadding = 0,
+                        labelSegWidth = 0.4,
+                        legendPos = c('right', 'none'),
+                        legendTextSize = 10,
+                        legendTitleSize = 10,
+                        axisTextSize = 12,
+                        axisTitleSize = 12,
                         verbose = FALSE,
                         ...){
 
-    colorScheme <- match.arg(colorScheme, c('oasis', 'sea', 'lava', 'custom'))
+    colorScheme <- match.arg(colorScheme, c('cloudy', 'cake', 'grapes',
+                                            'lava', 'oasis', 'orichalc',
+                                            'sea', 'sky', 'custom'))
     segType <- match.arg(segType, c('dashed','solid', 'dotted',
                                     'dotdash', 'longdash', 'twodash'))
+    labelType <- match.arg(labelType, c('free', 'boxed'))
     legendPos <- match.arg(legendPos, c('right', 'none'))
-
-    if (colorScheme == 'oasis'){
-        palette <- dpColors('oasis')
-        if (useSchemeDefaults){
-            segColor <- 'plum1'
-            pointColor <- 'red'
-            labelColor <- 'black'
-        }
-    }
-
-    if (colorScheme == 'sea'){
-        palette <- dpColors('sea')
-        if (useSchemeDefaults){
-            segColor <- 'thistle'
-            pointColor <- 'red'
-            labelColor <- 'black'
-        }
-    }
-
-    if (colorScheme == 'lava'){
-        palette <- dpColors('lava')
-        if (useSchemeDefaults){
-            segColor <- 'dodgerblue3'
-            pointColor <- 'black'
-            labelColor <- 'black'
-        }
-    }
 
     if (colorScheme == 'custom'){
         if (is.null(palette))
             stop('The custom color scheme requires an input palette.')
         palette <- palette
+    } else {
+        palette <- dpColors(colorScheme)
+        if (useSchemeDefaults){
+            colorsDF <- lpsColors()
+            labelColor <- colorsDF['label', colorScheme]
+            pointColor <- colorsDF['point', colorScheme]
+            segColor <- colorsDF['segment', colorScheme]
+        }
     }
 
     pointLabs <- rownames(df)
@@ -139,7 +137,7 @@ densityPlot <- function(df,
         if(drawScores)
             if(is(df[, 3])[1] == 'numeric')
                 pointLabs <- mapply(function(x, y) paste0(x, '\n', y),
-                                    pointLabs, round(df[, 3], 2)) else
+                                       rownames(df), round(df[, 3], 2)) else
                                         warning('drawScores is set to TRUE but ',
                                                 'no scores are available in ',
                                                 'the third column. Scores will ',
@@ -153,8 +151,12 @@ densityPlot <- function(df,
         scale_fill_gradientn(colors=palette) + theme_classic() +
         expand_limits(x=expandRange(df[, 1], expandPerc),
                       y=expandRange(df[, 2], expandPerc)) +
-        labs(x='x', y='y', fill='Density') +
-        theme(legend.position=legendPos)
+        labs(x=xLab, y=yLab, fill=legendTitle) +
+        theme(legend.position=legendPos,
+              legend.text=element_text(size=legendTextSize),
+              legend.title=element_text(size=legendTitleSize),
+              axis.text=element_text(size=axisTextSize),
+              axis.title=element_text(size=axisTitleSize))
 
     if(drawNN){
         lastCol <- df[, ncol(df)]
@@ -162,7 +164,7 @@ densityPlot <- function(df,
             if(verbose)
                 message('Nearest neighbor information not provided.',
                         ' Will be computed.')
-        }else{
+        } else{
             extraNames <- setdiff(lastCol, rownames(df))
             if (length(extraNames))
                 warning(extraNames[1], ' found in the last column but not',
@@ -180,13 +182,10 @@ densityPlot <- function(df,
                               linewidth=segWidth)
     }
 
-    p <- p + geom_point(size=pointSize, color=pointColor) +
-        geom_text_repel(aes(label=pointLabs),
-                        size=labelSize,
-                        color=labelColor,
-                        force=labelRepulsion,
-                        force_pull=labelPull,
-                        max.overlaps=maxOverlaps)
+    p <- p + geom_point(size=pointSize, color=pointColor)
+    p <- labelPoints(p, df, pointLabs, labelType, labelSize, labelColor,
+                     labelRepulsion, labelPull, maxOverlaps,
+                     labelPadding, boxPadding, labelSegWidth)
 
     p <- centerTitle(p, title, ...)
     return(p)

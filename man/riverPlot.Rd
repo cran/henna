@@ -6,15 +6,15 @@
 \usage{
 riverPlot(
   df,
-  title = "River plot",
+  title = NULL,
   fillColIndex = 2,
   curveType = "sigmoid",
   alpha = 0.8,
   strataFill = "lightgoldenrod1",
   labelSize = 3,
+  axisTextSize = 12,
+  axisTitleSize = 12,
   viridisPal = "turbo",
-  legendPos = "none",
-  margins = margin(0, -10, -10, -10),
   ...
 )
 }
@@ -33,12 +33,11 @@ riverPlot(
 
 \item{labelSize}{Size of labels of strata elements.}
 
+\item{axisTextSize}{Axis text size.}
+
+\item{axisTitleSize}{Axis title size.}
+
 \item{viridisPal}{Viridis palette.}
-
-\item{legendPos}{Legend position.}
-
-\item{margins}{Plot margins. Must be a vector of size 4 listing the desired
-top, right, bottom and left margin, in that order.}
 
 \item{...}{Other arguments passed to \code{centerTitle}.}
 }

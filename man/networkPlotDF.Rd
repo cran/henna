@@ -4,15 +4,12 @@
 \alias{networkPlotDF}
 \title{Prepare data frame for network plot}
 \usage{
-networkPlotDF(df, rankCol = "rank", edgeScale = 2)
+networkPlotDF(df, rankCol = "rank")
 }
 \arguments{
 \item{df}{Data frame.}
 
 \item{rankCol}{Name of the rank column.}
-
-\item{edgeScale}{Scaling factor used in generating
-edge weights.}
 }
 \value{
 A data frame ready to serve as input to \code{networkPlot}.

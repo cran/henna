@@ -2,21 +2,17 @@
 #'
 NULL
 
-#' Plot item bars grouped by class
+#' Plot bars for item counts grouped and colored by class
 #'
-#' This function plots bars for each item while grouping them by class and
-#' ordering them.
+#' This function plots bars for item counts grouped and colored by class.
 #'
-#' @inheritParams networkPlot
-#' @inheritParams hullPlot
-#' @inheritParams radialPlot
-#' @param df A data frame with at least three columns, with class, item and
-#' value as the first three columns. The latter must be numeric.
-#' @param legendLab Legend label.
-#' @param labelColor Label color.
+#' @inheritParams documentFun
+#' @param df A data frame with at least three columns. Its first column
+#' (categorical) colors the plot bars. The second column (categorical)
+#' labels the plots bars. The third column (numeric) sets the bar lengths.
 #' @param decreasing Whether to display the bars in decreasing order of length.
 #' @param valueCutoff Cutoff used for filtering the input data frame based on
-#' the value column. Only values greater than this cutoff will be displayed on
+#' the third (value) column. Only values above this cutoff will be displayed on
 #' the plot.
 #'
 #' @return An object of class \code{gg}.
@@ -35,13 +31,17 @@ NULL
 #' @export
 #'
 classPlot <- function(df,
-                      title = 'Class plot',
+                      title = NULL,
                       xLab = 'Value',
                       yLab = 'Item',
-                      legendLab ='Class',
+                      legendTitle = 'Class',
                       palette = 'Spectral',
                       labelSize = 2.5,
                       labelColor ='black',
+                      legendTitleSize = 10,
+                      legendTextSize = 10,
+                      axisTextSize = 12,
+                      axisTitleSize = 12,
                       decreasing = TRUE,
                       valueCutoff = 0,
                       ...){
@@ -57,9 +57,13 @@ classPlot <- function(df,
                     y=.data[[names(df)[4]]])) +
         geom_bar(position='stack', stat='identity') +
         theme_classic() +
-        theme(axis.ticks.y=element_blank(),
-              axis.text.y=element_blank()) +
-        labs(x=xLab, y=yLab, fill=legendLab) +
+        theme(legend.text=element_text(size=legendTextSize),
+              legend.title=element_text(size=legendTitleSize),
+              axis.ticks.y=element_blank(),
+              axis.text.y=element_blank(),
+              axis.text.x=element_text(size=axisTextSize),
+              axis.title.x=element_text(size=axisTitleSize)) +
+        labs(x=xLab, y=yLab, fill=legendTitle) +
         scale_fill_manual(values=hcl.colors(nClasses, palette)) +
         geom_text(aes(x=.data[[names(df)[3]]] / 2,
                       y=.data[[names(df)[4]]],

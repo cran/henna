@@ -1,6 +1,7 @@
-#' Find the connected components of a graph data frame
+#' Find the connected components of a graph represented as a data frame
 #'
-#' This function finds the connected components of a graph data frame.
+#' This function finds the connected components of a graph represented as
+#' a data frame.
 #'
 #' @param df A data frame with two categorical columns representing the edges
 #' of a graph.

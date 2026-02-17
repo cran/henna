@@ -61,11 +61,10 @@ computeMeanRanks <- function(rankDF, sigDigits=2){
 #'
 #' This function creates a rank plot.
 #'
+#' @inheritParams documentFun
 #' @param df A data frame with ranks as columns and items as rows, or a
 #' summary data frame generated with \code{rankSummary}. If the latter,
 #' \code{summarize} must be set to \code{FALSE}.
-#' @inheritParams riverPlot
-#' @inheritParams classPlot
 #' @param summarize Whether to summarize the ranks with \code{rankSummary}.
 #' Must be set to \code{FALSE} if the input data frame has been generated with
 #' \code{rankSummary}.
@@ -79,8 +78,6 @@ computeMeanRanks <- function(rankDF, sigDigits=2){
 #' @param labelFace Font face of label marking average rank for each item. Must
 #' be one among 'plain', 'bold', 'italic' and 'bold-italic'.
 #' Ignored if \code{sigDigits} is \code{NULL}.
-#' @param xAngle Angle of x axis text.
-#' @param vJust Vertical justification in [0, 1].
 #' @param labelScalingFactor Scaling factor used when displaying mean ranks.
 #' Ignored if \code{sigDigits} is \code{NULL}.
 #' @param labelOffset Vertical offset used when displaying mean ranks.
@@ -97,16 +94,20 @@ computeMeanRanks <- function(rankDF, sigDigits=2){
 #' @export
 #'
 rankPlot <- function(df,
-                     title = 'Rank plot',
+                     title = NULL,
                      summarize = TRUE,
                      viridisPal = 'turbo',
                      xLab = 'Item',
                      yLab = 'Rank count',
-                     legendLab = 'Rank',
+                     legendTitle = 'Rank',
                      sigDigits = NULL,
                      labelSize = 2.5,
                      labelColor = 'black',
                      labelFace = c('plain', 'bold', 'italic', 'bold-italic'),
+                     legendTextSize = 10,
+                     legendTitleSize = 10,
+                     axisTextSize = 12,
+                     axisTitleSize = 12,
                      xAngle = 45,
                      vJust = 0.6,
                      labelScalingFactor = 0.9,
@@ -127,8 +128,12 @@ rankPlot <- function(df,
         theme_classic() +
         scale_fill_viridis_d(option=viridisPal) + labs(x=xLab,
                                                        y=yLab,
-                                                       fill=legendLab) +
-        theme(axis.text.x=element_text(angle=xAngle, vjust=vJust))
+                                                       fill=legendTitle) +
+        theme(legend.text=element_text(size=legendTextSize),
+              legend.title=element_text(size=legendTitleSize),
+              axis.text.x=element_text(angle=xAngle, vjust=vJust),
+              axis.text=element_text(size=axisTextSize),
+              axis.title=element_text(size=axisTitleSize))
 
     if(!is.null(sigDigits)){
         labelFace <- match.arg(labelFace,
@@ -136,13 +141,13 @@ rankPlot <- function(df,
         nRanks <- sum(df[, 3]) / length(unique(df[, 1]))
         labelHeights <- labelScalingFactor * nRanks *
             (liver::minmax(meanRanks[, 2]) + labelOffset)
-        p <- p + geom_text(data=meanRanks,
-                           aes(x=.data[[names(meanRanks)[1]]],
+        p <- p + geom_label(data=meanRanks,
+                            aes(x=.data[[names(meanRanks)[1]]],
                                y=labelHeights,
                                label=.data[[names(meanRanks)[2]]]),
-                           size=labelSize,
-                           color=labelColor,
-                           fontface=labelFace)
+                            size=labelSize,
+                            color=labelColor,
+                            fontface=labelFace)
     }
 
     p <- centerTitle(p, title, ...)

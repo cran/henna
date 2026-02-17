@@ -6,14 +6,16 @@
 \usage{
 networkPlot(
   df,
-  title = "Network plot",
-  rankCol = "rank",
-  edgeScale = 2,
+  title = NULL,
+  numCol = NULL,
+  numColType = c("weights", "ranks"),
   nodeSize = 10,
   nodeTextSize = 2.3,
-  palette = "Spectral",
+  palette = "grDevices::Spectral",
   nodeColor = NULL,
+  edgeWidth = 1,
   edgeColor = "black",
+  edgeScales = c(0.2, 0.6),
   ...
 )
 }
@@ -22,10 +24,12 @@ networkPlot(
 
 \item{title}{Plot title.}
 
-\item{rankCol}{Name of the rank column.}
+\item{numCol}{Name of the numeric column used to vary edge widths. If no
+such column is provided, set to \code{NULL}.}
 
-\item{edgeScale}{Scaling factor used in generating
-edge weights.}
+\item{numColType}{The type of the numeric column used to vary edge widths.
+Choose between 'weights' and 'ranks' Ignored if \code{numCol}
+is \code{NULL}.}
 
 \item{nodeSize}{Size of graph nodes.}
 
@@ -37,21 +41,27 @@ Ignored if nodeColor is not \code{NULL}.}
 \item{nodeColor}{Color used for nodes. Default is \code{NULL}
 (\code{palette} will instead be used).}
 
+\item{edgeWidth}{Width to be used for all edges before scaling
+if \code{numCol} is \code{NULL}; otherwise ignored.}
+
 \item{edgeColor}{Color used for edges.}
 
-\item{...}{Other arguments passed to \code{centerTitle}.}
+\item{edgeScales}{Edge width scales. Must be a numeric vector of size
+2 (minimum and maximum).}
+
+\item{...}{Additional arguments passed to \code{centerTitle}.}
 }
 \value{
 An object of class \code{ggraph}.
 }
 \description{
-This function plots the graph of the data frame and optionallt uses different
+This function plots the graph of the data frame and optionally uses different
 colors for nodes belonging to different connected components.
 }
 \examples{
 df <- data.frame(gene1 = paste0('G', c(1, 2, 5, 6, 7, 17)),
 gene2 = paste0('G', c(2, 5, 8, 11, 11, 11)),
 rank = c(1, 1, 3, 3, 3, 3))
-networkPlot(df)
+networkPlot(df, numCol='rank', numColType='ranks')
 
 }
